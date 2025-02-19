@@ -19,33 +19,26 @@ public class telmetry extends LinearOpMode {
     private DcMotor backLeftDrive;
     double servoPos = 0;
     boolean lastPress= false;
+    boolean lastPress2= false;
 
     @Override
     public void runOpMode(){
         telemetry.addData("Status", "Initialized");
+        telemetry.addData("code", " updated");
         telemetry.update();
 
         Elevator = hardwareMap.get(DcMotor.class,"ElevatorMotor");
         Arm = hardwareMap.get(DcMotor.class,"ArmMotor");
-        servoLeft = hardwareMap.get(Servo.class, "ArmLeftServo");
-        servoRight = hardwareMap.get(Servo.class, "ArmRightServo");
         frontLeftDrive  = hardwareMap.get(DcMotor.class, "front left");
         frontRightDrive = hardwareMap.get(DcMotor.class, "front right");
         backLeftDrive = hardwareMap.get(DcMotor.class, "back left");
         backRightDrive = hardwareMap.get(DcMotor.class, "back right");
         waitForStart();
         while (opModeIsActive()){
-
-
-            if(gamepad1.a) frontLeftDrive.setPower(0.1); //backright
-            if(gamepad1.b) frontRightDrive.setPower(0.1); //frontright
-            if(gamepad1.x) backRightDrive.setPower(0.1); //backleft
-            if(gamepad1.y) backLeftDrive.setPower(0.1); //frontleft
-
+            telemetry.addData("x",gamepad1.x);
+            telemetry.addData("a",gamepad1.a);
             telemetry.addData("Arm", Arm.getCurrentPosition());
             telemetry.addData("Elevator", Elevator.getCurrentPosition());
-            telemetry.addData("servoPositionRight", servoRight.getPosition());
-            telemetry.addData("servoPositionLeft", servoLeft.getPosition());
             telemetry.addData("servoPos", servoPos);
             telemetry.update();
         }

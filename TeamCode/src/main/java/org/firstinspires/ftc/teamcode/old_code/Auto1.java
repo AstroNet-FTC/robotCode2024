@@ -1,13 +1,9 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.old_code;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 /*
@@ -22,8 +18,7 @@ import com.qualcomm.robotcore.util.Range;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
-
-@Autonomous(name="Basic: Linear OpMode", group="Linear OpMode")
+@Autonomous
 //@Disabled`
 public class  Auto1 extends LinearOpMode {
 
@@ -77,6 +72,8 @@ public class  Auto1 extends LinearOpMode {
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         // Wait for the game to start (driver presses START)
         waitForStart();
+
+
         runtime.reset();
         encoderDrive(Drive_Speed, 0.250, 0.250, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
 
@@ -150,12 +147,13 @@ public class  Auto1 extends LinearOpMode {
     }
     public void proportional(DcMotor motor, final int wanted, double KP, double KF){
         int current = motor.getCurrentPosition();
-        int Error = wanted;
+        double Error = wanted - current;
+        final double totalFix = wanted-current;
         double fix = 1;
-        while(wanted != current && opModeIsActive()){
+        while((wanted != current) && opModeIsActive()){
             current = motor.getCurrentPosition();
             Error =  (wanted - current);
-            fix = Error * KP;
+            fix = (Error / totalFix) * KP;
             motor.setPower(fix + KF);
         }
     }
